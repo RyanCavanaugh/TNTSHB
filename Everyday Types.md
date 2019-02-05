@@ -9,9 +9,9 @@ This isn't an exhaustive list, and future chapters will describe more ways to na
 
 Each primitive type in JavaScript has a corresponding type in TypeScript. As you might expect, these are the same names you'd see if you used the `typeof` operator on a corresponding value:
 
- * `string` represents string values like `"Hello, world"`
- * `number` is for numbers like `42`. JavaScript does not have a special runtime value for integers, so there's no equivalent to `int` or `float` - everything is simply `number`
- * `boolean` is for `true` and `false`
+* `string` represents string values like `"Hello, world"`
+* `number` is for numbers like `42`. JavaScript does not have a special runtime value for integers, so there's no equivalent to `int` or `float` - everything is simply `number`
+* `boolean` is for `true` and `false`
 
 > The type names `String`, `Number`, and `Boolean` are legal, but refer to some special built-in types that shouldn't appear in your code. *Always* use `string`, `number`, or `boolean`.
 
@@ -151,20 +151,19 @@ interface Point {
 }
 ```
 
-### Differences
+### Differences Between Interfaces and Type Aliases
 
 Type aliases and interfaces are very similar, and in many cases you can choose between them freely.
 Here are the most relevant differences between the two that you should be aware of.
 You'll learn more about these concepts in later chapters, so don't worry if you don't understand all of these right away.
 
- * Classes can implement interfaces, but not type aliases
- * Interfaces may be `extend`ed, but not type aliases
- * Type aliases may not participate in declaration merging, but interfaces can
- * Interfaces may only be used to declare object types
- * Interface names will *always* appear in their original form in error messages, and *only* when they are used by name
- * Type alias names *may* appear in error messages, including where they are an exact match for an anonymous type
+* Interfaces may be `extend`ed, but not type aliases. We'll discuss this later, but it means that interfaces can provide more guarantees when creating new types out of other types.
+* Type aliases may not participate in declaration merging, but interfaces can.
+* Interfaces may only be used to declare object types.
+* Interface names will *always* appear in their original form in error messages, but *only* when they are used by name.
+* Type alias names *may* appear in error messages, sometimes in place of the equivalent anonymous type (which may or may not be desirable).
 
-For the most part, you can choose based on personal preference, and TypeScript will tell you if it needs something to be the other kind of name.
+For the most part, you can choose based on personal preference, and TypeScript will tell you if it needs something to be the other kind of declaration.
 
 ## Optional Properties
 
