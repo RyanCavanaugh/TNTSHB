@@ -102,11 +102,14 @@
   * Object Types
     * Anonymous object types
     * Type aliases and Interfaces
-    * Optional properties
   * Union Types
     * Simple concept: "This or that"
     * Unions of primitives
     * Introduce concept of type narrowing and demonstrate it with typeof
+  * Type assertions
+    * Sometimes you know more than the checker
+    * `e as T` vs `<T>e`
+    * Not all assertions are valid
   * Literal Types
     * String literals
     * Numeric literals
@@ -118,10 +121,6 @@
     * Undefined in optional parameters and properties
     * Demonstrate basic narrowing to check for them
     * Postfix unary `!`
-  * Type assertions
-    * Sometimes you know more than the checker
-    * `e as T` vs `<T>e`
-    * Not all assertions are valid
   * Where do types come from?
     * Built-in (lib.d.ts)
     * Inference
@@ -164,6 +163,7 @@
     * void, object, unknown, never
 
  * Chapter 5: More on Object Types
+  * Optional properties
   * interfaces and type aliases
     * Differences; pros/cons
   * Generic object types
