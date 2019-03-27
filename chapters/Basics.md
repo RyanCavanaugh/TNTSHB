@@ -1,4 +1,4 @@
-# Types in JavaScript: they *do* exist!
+# TypeScript Basics
 
 __toc__
 
@@ -63,7 +63,7 @@ These are what we call "runtime types" or "dynamic types".
 When we run our code, the value `1234` has a type called `number`, and the value `"hello world"` has the type `string`.
 When we say that JavaScript is a "dynamically typed" language, we mean the types are there, but we aren't concerned with them until our code actually runs.
 
-# Static type-checking
+## Static type-checking
 
 Think back to that `TypeError` we got earlier from calling a `string`.
 *Most people* don't like to get any sorts of errors when running their code - those are considered bugs!
@@ -86,7 +86,7 @@ foo();
 
 Running that last sample with TypeScript will give us an error message before we run the code in the first place.
 
-# Bugs beyond runtime errors
+## Bugs beyond runtime errors
 
 So far we've been discussing certain things like runtime errors - cases where the JavaScript runtime throws its hands up and tells us that it thinks something is nonsensical.
 Those cases come up because [the ECMAScript specification](https://tc39.github.io/ecma262/) actually declares that trying to call something that isn't callable causes an error.
@@ -159,7 +159,7 @@ else if (value === "c") {
 }
 ```
 
-# TypeScript tooling
+## TypeScript Tooling
 
 <!-- TODO: this section's title sucks -->
 
@@ -180,7 +180,7 @@ All of this is built on top of the type-checker and fully cross-platform, so it'
 
 <!-- TODO: validate that link -->
 
-# `tsc`, the TypeScript compiler
+## `tsc`, the TypeScript compiler
 
 Alright, alright, let's cut to the chase.
 We've been talking about type-checking, but we haven't yet used our type-*checker*.
@@ -387,7 +387,7 @@ greet("Maddison", new Date());
 > Given the fact that TypeScript needed a tool to strip types away, it made a lot of sense for the compiler to downlevel code as well.
 > While today there are other compilers that provide the same functionality and also strip out types (such as Babel), TypeScript is also incredibly efficient at this task, still produces approachable JavaScript output, and has very accurate source-mapping support so you can debug the code that you wrote.
 
-# Strictness
+## Strictness
 
 Users come to TypeScript looking for different things in a type-checker.
 Some people are looking for a more loose opt-in experience which can help validate only some parts of our program and give us decent tooling.
@@ -405,7 +405,7 @@ TypeScript has several type-checking strictness flags that can be turned on or o
 The `--strict` flag toggles them all on simultaneously, but we can opt out of them individually.
 The two biggest ones you should know about are `noImplicitAny` and `strictNullChecks`.
 
-## `noImplicitAny`
+### `noImplicitAny`
 
 Recall that in some places, TypeScript doesn't try to infer any types for us and instead falls back to the most lenient type: `any`.
 This isn't the worst thing that can happen - after all, falling back to `any` is just the JavaScript experience anyway.
@@ -414,7 +414,7 @@ However, using `any` often defeats the purpose of using TypeScript in the first 
 The more typed your program is, the more validation and tooling you'll get, meaning you'll run into fewer bugs as you code.
 Turning on the `noImplicitAny` flag will issue an error on any variables whose type is implicitly inferred as `any`.
 
-## `strictNullChecks`
+### `strictNullChecks`
 
 By default, values like `null` and `undefined` are assignable to any other type.
 This can make writing some code easier, but forgetting to handle `null` and `undefined` is the cause of countless bugs in the world - not even just JavaScript!
