@@ -33,18 +33,14 @@ let foo = "Hello World!";
 
 As you can probably guess, if we try to run `foo.toLowerCase()`, we'll get the same string, but completely in lower-case letters.
 
-```
-"hello world!"
-```
-
 What about that second line of code?
-If you're familiar with JavaScript, you'll know this fails with a thrown error.
+If you're familiar with JavaScript, you'll know this fails with an exception:
 
 ```
 TypeError: foo is not a function
 ```
 
-Oof - it'd be great if we could avoid mistakes like this.
+It'd be great if we could avoid mistakes like this.
 When we run our code, the way that our JavaScript runtime chooses what to do is by figuring out the *type* of the value - what sorts of behaviors and capabilities it has.
 That's part of what that `TypeError` is alluding to - it's saying that there's nothing to call on the string `"Hello World"`
 
@@ -86,7 +82,7 @@ foo();
 
 Running that last sample with TypeScript will give us an error message before we run the code in the first place.
 
-## Bugs beyond runtime errors
+## Non-exception Failures
 
 So far we've been discussing certain things like runtime errors - cases where the JavaScript runtime throws its hands up and tells us that it thinks something is nonsensical.
 Those cases come up because [the ECMAScript specification](https://tc39.github.io/ecma262/) actually declares that trying to call something that isn't callable causes an error.
@@ -159,7 +155,7 @@ else if (value === "c") {
 }
 ```
 
-## TypeScript Tooling
+## Types for Tooling
 
 <!-- TODO: this section's title sucks -->
 
@@ -254,7 +250,7 @@ TypeScript is telling us we forgot to pass an argument to the `greet` function, 
 So far we've only written standard JavaScript, and yet type-checking was still able to find problems with our code.
 Thanks TypeScript!
 
-## Errors don't block output
+### Emitting with Errors
 
 One thing you might not have noticed from the last example was that our `hello.js` file changed again.
 If we open that file up then we'll see that the contents still basically look the same as our input file.
@@ -277,7 +273,7 @@ tsc --noEmitOnError hello.ts
 
 You'll notice that `hello.js` never gets updated.
 
-## Explicit types
+## Explicit Types
 
 Up until now, we haven't told TypeScript what `person` or `date` are.
 Let's change up our code a little bit so that we tell TypeScript that `person` is a `string`, and that `date` should be a `Date` object.
@@ -325,11 +321,11 @@ function greet(person: string, date: Date) {
 greet("Maddison", new Date());
 ```
 
-# Optional types and type inference
+## Optional types and type inference
 
 <!-- TODO talk about this and 'any' -->
 
-## Stripping types out
+## Erasing Types
 
 Let's take a look at what happens when we compile with `tsc`:
 
