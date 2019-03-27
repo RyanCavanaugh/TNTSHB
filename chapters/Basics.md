@@ -90,8 +90,8 @@ Running that last sample with TypeScript will give us an error message before we
 
 So far we've been discussing certain things like runtime errors - cases where the JavaScript runtime throws its hands up and tells us that it thinks something is nonsensical.
 Those cases come up because [the ECMAScript specification](https://tc39.github.io/ecma262/) actually declares that trying to call something that isn't callable causes an error.
-Sounds obvious, but you could imagine that accessing a property on an object that doesn't exist would cause an error too.
-Instead, JavaScript gives us different behavior to keep things entertaining and gives us the value `undefined`.
+That sounds obvious, but you could imagine that accessing a property on an object that doesn't exist would cause an error too.
+Instead, JavaScript gives us different behavior to keep things entertaining and gives us the value `undefined`:
 
 ```js
 let foo = {
@@ -102,8 +102,8 @@ let foo = {
 foo.location; // returns undefined
 ```
 
-Ultimately, a static type system has to make the call over what code should be flagged as an error in its system, even if it's valid JavaScript that won't immediately throw an error.
-So in TypeScript, the following code produces an error about `location` not being defined.
+Ultimately, a static type system has to make the call over what code should be flagged as an error in its system, even if it's "valid" JavaScript that won't immediately throw an error.
+In TypeScript, the following code produces an error about `location` not being defined:
 
 ```ts
 let foo = {
@@ -114,7 +114,7 @@ let foo = {
 foo.location; // returns undefined
 ```
 
-While sometimes that implies a tradeoff in what you can express, the intent is to catch legitimate bugs in our programs.
+While sometimes that implies a trade-off in what you can express, the intent is to catch legitimate bugs in our programs.
 And TypeScript catches *a lot* of legitimate bugs.
 For example: typos,
 
@@ -139,23 +139,13 @@ function flipCoin() {
 
 or basic logic errors.
 
-<!-- TODO: this example screws with our tooltips -->
-
 ```ts
-const value =
-    Math.random() < 0.5 ? "a" :
-        Math.random() < 0.5 ? "b" :
-            "c";
-
-// Oops - neither 'else if' branch will ever run!
+const value = Math.random() < 0.5 ? "a" : "b";
 if (value !== "a") {
   // ...
 }
 else if (value === "b") {
-  // ...
-}
-else if (value === "c") {
-  // ...
+  // Oops, unreachable
 }
 ```
 
@@ -163,13 +153,13 @@ else if (value === "c") {
 
 <!-- TODO: this section's title sucks -->
 
-So TypeScript can catch bugs when we make mistakes in our code.
+TypeScript can catch bugs when we make mistakes in our code.
 That's great, but TypeScript can *also* prevent us from making those mistakes in the first place.
 
-You see, the type-checker has information to check things like whether we're accessing the right properties on variables and other properties.
-But once it has that information, it can also start *suggesting* which properties you might want to use.
+The type-checker has information to check things like whether we're accessing the right properties on variables and other properties.
+Once it has that information, it can also start *suggesting* which properties you might want to use.
 
-That means TypeScript can be leveraged for editing code too, and so the core type-checker can provide error messages and code completion as you type across editors.
+That means TypeScript can be leveraged for editing code too, and the core type-checker can provide error messages and code completion as you type in the editor.
 That's part of what people often refer to when they talk about tooling in TypeScript.
 
 <!-- TODO: insert GIF of completions here -->
@@ -182,7 +172,6 @@ All of this is built on top of the type-checker and fully cross-platform, so it'
 
 ## `tsc`, the TypeScript compiler
 
-Alright, alright, let's cut to the chase.
 We've been talking about type-checking, but we haven't yet used our type-*checker*.
 Let's get acquainted with our new friend `tsc`, the TypeScript compiler.
 First we'll need to grab it via npm.
@@ -192,7 +181,7 @@ npm install -g typescript
 ```
 
 > This installs the TypeScript Compiler `tsc` globally.
-> You can use `npx` or similar techniques if you'd prefer to run `tsc` from a local `node_modules` installation instead.
+> You can use `npx` or similar tools if you'd prefer to run `tsc` from a local `node_modules` package instead.
 
 Now let's move to an empty folder and try writing our first TypeScript program: `hello.ts`:
 
@@ -287,7 +276,7 @@ function greet(person: string, date: Date) {
 
 What we did was add *type annotations* on `person` and `date` to describe what types of values `greet` can be called with.
 You can read that signature as "`greet` takes a `person` of type `string`, and a `date` of type `Date`".
-<!-- TODO: is that really necessary? -->
+
 With this, TypeScript can tell us about other cases where we might have been called incorrectly.
 For example...
 
@@ -300,16 +289,10 @@ greet("Maddison", Date());
 ```
 
 Huh?
-TypeScript reported an error on our second argument:
-
-```
-Argument of type 'string' is not assignable to type 'Date'.
-```
+TypeScript reported an error on our second argument, but why?
 
 Perhaps surprisingly, calling `Date()` in JavaScript returns a `string`.
 On the other hand, constructing a `Date` with `new Date()` actually gives us what we were expecting.
-
-> **Side note**: Thanks JavaScript. We still ❤ you though.
 
 Anyway, we can quickly fix up the error:
 
@@ -321,11 +304,7 @@ function greet(person: string, date: Date) {
 greet("Maddison", new Date());
 ```
 
-## Optional types and type inference
-
-<!-- TODO talk about this and 'any' -->
-
-## Erasing Types
+## Erased Types
 
 Let's take a look at what happens when we compile with `tsc`:
 
@@ -346,6 +325,8 @@ Type annotations aren't part of JavaScript (or ECMAScript to be pedantic), so th
 That's why TypeScript needs a compiler in the first place - it needs some way to strip out or transform any TypeScript-specific code so that you can run it.
 Most TypeScript-specific code gets erased away, and likewise, here our type annotations were completely erased.
 
+> **Remember**: Type annotations never change the runtime behavior of your program.
+
 ## Downleveling
 
 One other difference from the above was that our template string was rewritten from
@@ -361,7 +342,8 @@ to
 ```
 
 Why did this happen?
-Well template strings are a feature from a version of ECMAScript called ECMAScript 2015 (a.k.a. ECMAScript 6, ES2015, ES6, etc. - don't ask).
+
+Template strings are a feature from a version of ECMAScript called ECMAScript 2015 (a.k.a. ECMAScript 6, ES2015, ES6, etc. - don't ask).
 TypeScript has the ability to rewrite code from newer versions of ECMAScript to older ones such as ECMAScript 3 or ECMAScript 5 (a.k.a. ES3 and ES5).
 This process from moving from a newer or "higher" version of ECMAScript to an older or "lower" one is sometimes called *downleveling*.
 
