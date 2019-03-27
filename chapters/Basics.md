@@ -359,11 +359,8 @@ function greet(person, date) {
 greet("Maddison", new Date());
 ```
 
-<!-- TODO: is this side note needed? -->
-
-> **For some historical context**, when TypeScript first came out, part of its vision was to provide the future features of JavaScript when they weren't supported in any runtime.
-> Given the fact that TypeScript needed a tool to strip types away, it made a lot of sense for the compiler to downlevel code as well.
-> While today there are other compilers that provide the same functionality and also strip out types (such as Babel), TypeScript is also incredibly efficient at this task, still produces approachable JavaScript output, and has very accurate source-mapping support so you can debug the code that you wrote.
+> While the default target is ES3, the great majority of running browsers support ES5.
+> Today, most developers can safely specify ES5 or even ES2016 as a target unless compatibility with certain ancient browers is important.
 
 ## Strictness
 
