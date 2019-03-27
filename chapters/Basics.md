@@ -187,12 +187,8 @@ First we'll need to grab it via npm.
 npm install -g typescript
 ```
 
-> **Side note:** Firstly, if you're on a Unix system like Mac or Linux, you might need a `sudo` at the front there. But secondly, if you're already pretty experienced with JavaScript and the npm ecosystem, you might be taken aback a bit here.
-> You're probably not the only one if you just had a reaction like  "**\*gasp\*** a global npm install!?" or "**\*groan\*** how am I going to fit this into my build system with Webpack/gulp/etc.?"
-> The good news is, no, you don't have to install TypeScript globally.
-> And don't worry, there are many different integrations for TypeScript with existing build tools.
-> If you already know better, then by all means do so with tools like npx, yarn, ts-loader, and gulp-typescript.
-> But this is by far the easiest way to use TypeScript today.
+> This installs the TypeScript Compiler `tsc` globally.
+> You can use `npx` or similar techniques if you'd prefer to run `tsc` from a local `node_modules` installation instead.
 
 Now let's move to an empty folder and try writing our first TypeScript program: `hello.ts`:
 
