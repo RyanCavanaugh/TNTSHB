@@ -42,22 +42,26 @@ TypeError: foo is not a function
 
 It'd be great if we could avoid mistakes like this.
 When we run our code, the way that our JavaScript runtime chooses what to do is by figuring out the *type* of the value - what sorts of behaviors and capabilities it has.
-That's part of what that `TypeError` is alluding to - it's saying that there's nothing to call on the string `"Hello World"`
+That's part of what that `TypeError` is alluding to - it's saying that there's nothing to call on the string `"Hello World"`.
 
-You might have heard of types before and assumed it was a TypeScript-specific concept.
-That's totally understandable - I mean, it's got "type" right there in the name!
-But the truth is that types are firmly baked into JavaScript itself.
-That `TypeError` hinted to it before, but we can also see this for ourselves using the `typeof` operator.
+For some values, such as the primitives `string` and `number`, we can identify their type at runtime using the `typeof` operator.
+But for other things like functions, there's no corresponding runtime mechanism to identify their types.
+For example, consider this function:
 
 ```js
-typeof 1234; // has type "number"
-
-typeof "hello world" // has type "string"
+function fn(x) {
+    return x.flip();
+}
 ```
 
-These are what we call "runtime types" or "dynamic types".
-When we run our code, the value `1234` has a type called `number`, and the value `"hello world"` has the type `string`.
-When we say that JavaScript is a "dynamically typed" language, we mean the types are there, but we aren't concerned with them until our code actually runs.
+We can *observe* by reading the code that this function will only work if given an object with a callable `flip` property, but JavaScript doesn't surface this information in a way that we can check while the code is running.
+The only way in pure JavaScript to tell what `fn` does with a particular value is to call it and see what happens.
+This kind of behavior makes it hard to predict what code will do before it runs, which means it's harder to know what your code is going to do while you're writing it.
+
+Seen in this way, a *type* is simply the concept of describing which values are legal to pass to `fn` and which aren't legal.
+JavaScript only truly provides for *dynamic* typing - running the code to see what happens.
+
+The alternative is to use a *static* type system to make predictions about what code is legal *before* it runs.
 
 ## Static type-checking
 
