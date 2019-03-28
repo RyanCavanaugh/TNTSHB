@@ -1,29 +1,29 @@
-# Typescript for Functional Programmers
+# TypeScript for Functional Programmers
 
-Typescript began its life as an attempt to bring traditional object-oriented types
-to Javascript so that the programmers at Microsoft could bring
-traditional object-oriented programs to the web. As it has developed, Typescript's type
-system has evolved to model code written by native Javascripters. The
+TypeScript began its life as an attempt to bring traditional object-oriented types
+to JavaScript so that the programmers at Microsoft could bring
+traditional object-oriented programs to the web. As it has developed, TypeScript's type
+system has evolved to model code written by native JavaScripters. The
 resulting system is powerful, interesting and messy.
 
 This introduction is designed for working Haskell or ML programmers
-who want to learn Typescript. It describes how the type system of
-Typescript differs from Haskell's type system. It also describes
-unique features of Typescript's type system that arise from its
-modelling of Javascript code.
+who want to learn TypeScript. It describes how the type system of
+TypeScript differs from Haskell's type system. It also describes
+unique features of TypeScript's type system that arise from its
+modelling of JavaScript code.
 
 This introduction does not cover object-oriented programming. In
-practise, object-oriented programs in Typescript are similar to those
+practise, object-oriented programs in TypeScript are similar to those
 in other popular languages with OO features.
 
 # Prerequisites
 
 In this introduction, I assume you know the following:
 
-- How to program in Javascript, the good parts.
+- How to program in JavaScript, the good parts.
 - Type syntax of a C-descended language.
 
-If you need to learn the good parts of Javascript, read
+If you need to learn the good parts of JavaScript, read
 [JavaScript: The Good Parts](http://shop.oreilly.com/product/9780596517748.do).
 You may be able to skip the book if you know how to write programs in
 a call-by-value lexically scoped language with lots of mutability and
@@ -31,14 +31,14 @@ not much else.
 [R<sup>4</sup>RS Scheme](https://people.csail.mit.edu/jaffer/r4rs.pdf) is a good example.
 
 [The C++ Programming Language](http://www.stroustrup.com/4th.html) is
-a good place to learn about C-style type syntax. Unlike C++, Typescript uses postfix types, like so: `x: string` instead
+a good place to learn about C-style type syntax. Unlike C++, TypeScript uses postfix types, like so: `x: string` instead
 of `string x`.
 
 # Concepts not in Haskell
 
 ## Built-in types
 
-Javascript defines 7 built-in types:
+JavaScript defines 7 built-in types:
 
 Type        | Explanation
 ------------|-----------
@@ -52,7 +52,7 @@ Type        | Explanation
 
 [See the MDN page for more detail](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures).
 
-Typescript has corresponding primitive types for the built-in types:
+TypeScript has corresponding primitive types for the built-in types:
 
 * `number`
 * `string`
@@ -114,8 +114,8 @@ everything except `null` and `undefined`.
 
 ### Apparent/boxed types
 
-Javascript has boxed equivalents of primitive types that contain the
-methods that programmers associate with those types. Typescript
+JavaScript has boxed equivalents of primitive types that contain the
+methods that programmers associate with those types. TypeScript
 reflects this with, for example, the difference between the primitive
 type `number` and the boxed type `Number`. The boxed types are rarely
 needed, since their methods return primitives.
@@ -131,7 +131,7 @@ Note that calling methods on numeric literals requires an additional
 
 ## Gradual typing
 
-Typescript uses the type `any` whenever it can't tell what the type of
+TypeScript uses the type `any` whenever it can't tell what the type of
 an expression should be. Compared to `Dynamic`, calling `any` a type
 is an overstatement. It just turns off the type checker
 wherever it appears. For example, you can push anything into an
@@ -158,7 +158,7 @@ expression of type `any`, the variable has type `any` too.
 let sepsis = anys[0] + anys[1]; // this could mean anything
 ```
 
-To get an error when Typescript produces an `any`, use `"noImplicitAny": true`, or `"strict": true`.
+To get an error when TypeScript produces an `any`, use `"noImplicitAny": true`, or `"strict": true`.
 
 ## Structural typing
 
@@ -195,14 +195,14 @@ two = new Three();
 
 ## Unions
 
-In Typescript, union types are untagged. In other words, they do not
+In TypeScript, union types are untagged. In other words, they do not
 generate discriminated unions like `data` does in Haskell. However,
 you can often discriminate types in a union using built-in tags or
 other properties.
 
 ```ts
 function lol(arg: string | string[] | () => string | { s: string }): string {
-    // this is super common in Javascript
+    // this is super common in JavaScript
     if (typeof arg === 'string') {
         return commonCase(arg);
     }
@@ -247,7 +247,7 @@ own predicates.
 
 ### Intersections
 
-In addition to unions, Typescript also has intersections:
+In addition to unions, TypeScript also has intersections:
 
 ```ts
 type Combined = { a: number } & { b: string }
@@ -262,9 +262,9 @@ recursive in case of conflicts, so `Conflicting.a: number & string`.
 
 Unit types are subtypes of primitive types that contain exactly one
 primitive value. For example, the string `"foo"` has the type
-`"foo"`. Since Javascript has no built-in enums, it is common to use a set of
+`"foo"`. Since JavaScript has no built-in enums, it is common to use a set of
 well-known strings instead. Unions of string literal types allow
-Typescript to type this pattern:
+TypeScript to type this pattern:
 
 ```ts
 declare function pad(s: string, n: number, direction: "left" | "right"): string;
@@ -297,7 +297,7 @@ pad("hi", 10, s);
 
 ## Ambient declarations
 
-It may be necessary to declare that a Javascript value exists, even
+It may be necessary to declare that a JavaScript value exists, even
 though it is not part of the compilation. These declarations are called
 "ambient declarations". They are particularly common when modelling
 global code in the browser:
@@ -321,7 +321,7 @@ declare module "jquery" {
 }
 ```
 
-For an entire module, however, the usual Typescript solution is to
+For an entire module, however, the usual TypeScript solution is to
 create a separate file with the extension `.d.ts`:
 
 ```ts
@@ -333,18 +333,18 @@ declare var $: JQuery;
 export = $;
 ```
 
-A `.d.ts` will be used in place of a Javascript file, or even
-Typescript file, if put in the correct location. See the section on
+A `.d.ts` will be used in place of a JavaScript file, or even
+TypeScript file, if put in the correct location. See the section on
 Declaration Files for more information.
 
 ## Merging
 
-Typescript tries to provide types for Javascript values, but,
+TypeScript tries to provide types for JavaScript values, but,
 especially early in its life, the number of type constructors it had
 was limited, and usually based on OO. To increase the expressivity of
-this system, Typescript merges structures of different kinds that have
+this system, TypeScript merges structures of different kinds that have
 the same name. You can combine structures to represent a
-single Javascript value with multiple Typescript declarations.
+single JavaScript value with multiple TypeScript declarations.
 
 For example, you can represent a function that also has properties, or
 nested types:
@@ -380,7 +380,7 @@ interface Main {
 
 ## Contextual typing
 
-Typescript has some obvious places where it can infer types, like
+TypeScript has some obvious places where it can infer types, like
 variable declarations:
 
 ```ts
@@ -402,7 +402,7 @@ is used to infer `U=string`, causing `sns` to have the type
 `string[]`.
 
 Note that inference will work in any order, but intellisense will only
-work left-to-right, so Typescript prefers to declare `map` with the
+work left-to-right, so TypeScript prefers to declare `map` with the
 array first:
 
 ```ts
@@ -430,7 +430,7 @@ so the compiler gives `o: { inference: string }`.
 And it does so while you are typing, so that after typing `o.`, you
 get completions for the property `inference`, along with any other
 properties you'd have in a real program.
-Altogether, this feature can make Typescript's inference look a bit
+Altogether, this feature can make TypeScript's inference look a bit
 like a unifying type inference engine, but it is not.
 
 ## Type aliases
@@ -458,7 +458,7 @@ actually exist. This means that `FString` can still be assigned to
 ## Discriminated Unions
 
 The closest equivalent to `data` is a union of types with discriminant
-properties, normally called discriminated unions in Typescript:
+properties, normally called discriminated unions in TypeScript:
 
 ```ts
 type Shape =
@@ -471,7 +471,7 @@ Unlike Haskell, the tag, or discriminant, is just a property in each
 object type. Each variant has an identical property with a different
 unit type. This is still a normal union type; the leading `|` is
 an optional part of the union type syntax. You can discriminate the
-members of the union using normal Javascript code:
+members of the union using normal JavaScript code:
 
 ```ts
 function area(s: Shape) {
@@ -488,7 +488,7 @@ function area(s: Shape) {
 ```
 
 Note that the return type is `area` is inferred to be `number` because
-Typescript knows the function is total. If some variant is not
+TypeScript knows the function is total. If some variant is not
 covered, the return type of `area` will be `number | undefined` instead.
 
 Also unlike Haskell, common properties show up in any union, so you
@@ -508,7 +508,7 @@ function height(s: Shape) {
 
 ## Type Parameters
 
-Like most C-descended languages, Typescript requires declaration of
+Like most C-descended languages, TypeScript requires declaration of
 type parameters:
 
 ```ts
@@ -527,10 +527,10 @@ function firstish<T extends { length: number }>(t1: T, t2: T): T {
 }
 ```
 
-Typescript can usually infer type arguments from a call based on the
+TypeScript can usually infer type arguments from a call based on the
 type of the arguments, so type arguments are usually not needed.
 
-Because Typescript is structural, it doesn't need type parameters as
+Because TypeScript is structural, it doesn't need type parameters as
 much as nominal systems. Specifically, they are not needed to make a
 function polymorphic. Type parameters should only be used to
 *propagate* type information, such as constraining parameters to be
@@ -548,7 +548,7 @@ In the first `length`, T is not necessary; notice that it's only
 referenced once, so it's not being used to constrain the type of the
 return value or other parameters.
 
-Typescript does not have higher kinded types, so the following is not legal:
+TypeScript does not have higher kinded types, so the following is not legal:
 
 ```ts
 function length<T extends ArrayLike<unknown>, U>(m: T<U>) {
@@ -557,7 +557,7 @@ function length<T extends ArrayLike<unknown>, U>(m: T<U>) {
 
 ## Module system
 
-Javascript's modern module syntax is a bit like Haskell's, except that
+JavaScript's modern module syntax is a bit like Haskell's, except that
 any file with `import` or `export` is implicitly a module:
 
 ```ts
@@ -594,7 +594,7 @@ file.
 
 ## `readonly` and `const`
 
-In Javascript, mutability is the default, although it allows variable
+In JavaScript, mutability is the default, although it allows variable
 declarations with `const` to declare that the *reference* is
 immutable. The referent is still mutable:
 
@@ -604,7 +604,7 @@ a.push(102); // ):
 a[0] = 101; // D:
 ```
 
-Typescript additionally has a `readonly` modifier for properties.
+TypeScript additionally has a `readonly` modifier for properties.
 
 ```ts
 interface Rx {
@@ -647,7 +647,7 @@ a[0] = 101; // error
 ```
 
 However, none of these options are the default, so they are not
-consistently used in Typescript code.
+consistently used in TypeScript code.
 
 # Further reading
 
