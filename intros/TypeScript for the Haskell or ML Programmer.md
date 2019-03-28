@@ -43,7 +43,7 @@ JavaScript defines 7 built-in types:
 Type        | Explanation
 ------------|-----------
 `Number`    | a double-precision IEEE 754 floating point.
-`String`    | an immutable 16-bit string.
+`String`    | an immutable UTF-16 string.
 `Boolean`   | `true` and `false`.
 `Symbol`    | a unique value usually used as a key.
 `Null`      | equivalent to the unit type.
@@ -62,14 +62,7 @@ TypeScript has corresponding primitive types for the built-in types:
 * `undefined`
 * `object`
 
-Notes:
-
-`null` and `undefined` are semantically different. They're both unit
-types with a single value each, `null` and `undefined`, but the
-runtime never produces `null`. It is reserved for authors to use.
-Despite this, `undefined` is frequently used by authors instead.
-
-### Other important types
+### Other important Typescript types
 
 Type        | Explanation
 ------------|-----------
@@ -80,7 +73,7 @@ object literal | eg `{ property: Type }`
 `void` | a subtype of `undefined` intended for use as a return type.
 `T[]` | mutable arrays, also written `Array<T>`
 `[T,T]` | tuples, which are fixed-length but mutable
-`Function` | all functions, even ones produces from `eval`
+`(t: T) => U` | functions
 
 Notes:
 
@@ -98,21 +91,9 @@ Notes:
     let o: { n: number, xs: object[] } = { n: 1, xs: [] }
     ```
 
-3. Confusingly, `{}` is the supertype of not only `object`, but
-everything except `null` and `undefined`.
+3. `[T, T]` is a subtype of `T[]`. This is different than Haskell, where tuples are not related to lists.
 
-4. This means that the top type, `unknown`, is almost the same as
-`{} | null | undefined`.
-
-5. Even more confusingly, any object type with a property is a subtype of `object`, which is a subtype of `{}`.
-
-6. `T[]` is a subtype of `Array` for any type `T`.
-
-7. `[T, T]` is a subtype of `Array`, as well as a subtype of `T[]`. This is different than Haskell, where tuples are not related to lists.
-
-8. `(t: T) => U` is a subtype of `Function`. Do not use `Function`.
-
-### Apparent/boxed types
+### Boxed types
 
 JavaScript has boxed equivalents of primitive types that contain the
 methods that programmers associate with those types. TypeScript
@@ -134,8 +115,8 @@ Note that calling methods on numeric literals requires an additional
 TypeScript uses the type `any` whenever it can't tell what the type of
 an expression should be. Compared to `Dynamic`, calling `any` a type
 is an overstatement. It just turns off the type checker
-wherever it appears. For example, you can push anything into an
-`any[]` without marking it in any way:
+wherever it appears. For example, you can push any value into an
+`any[]` without marking the value in any way:
 
 ```ts
 // with "noImplicitAny": false in tsconfig.json, anys: any[]
@@ -158,7 +139,8 @@ expression of type `any`, the variable has type `any` too.
 let sepsis = anys[0] + anys[1]; // this could mean anything
 ```
 
-To get an error when TypeScript produces an `any`, use `"noImplicitAny": true`, or `"strict": true`.
+To get an error when TypeScript produces an `any`, use
+`"noImplicitAny": true`, or `"strict": true` in `tsconfig.json`.
 
 ## Structural typing
 
@@ -293,87 +275,6 @@ in turn prevents assignments to `s` of variables that are not of type
 ```ts
 let s: "left" | "right" = "right";
 pad("hi", 10, s);
-```
-
-## Ambient declarations
-
-It may be necessary to declare that a JavaScript value exists, even
-though it is not part of the compilation. These declarations are called
-"ambient declarations". They are particularly common when modelling
-global code in the browser:
-
-```ts
-interface JQuery {
-    // types here!
-}
-declare var $: JQuery;
-```
-
-But they can also be used to declare an entire module:
-
-```ts
-declare module "jquery" {
-  interface JQuery {
-      // types here!
-  }
-  declare var $: JQuery;
-  export = $;
-}
-```
-
-For an entire module, however, the usual TypeScript solution is to
-create a separate file with the extension `.d.ts`:
-
-```ts
-// @Filename: jquery.d.ts
-interface JQuery {
-    // types here!
-}
-declare var $: JQuery;
-export = $;
-```
-
-A `.d.ts` will be used in place of a JavaScript file, or even
-TypeScript file, if put in the correct location. See the section on
-Declaration Files for more information.
-
-## Merging
-
-TypeScript tries to provide types for JavaScript values, but,
-especially early in its life, the number of type constructors it had
-was limited, and usually based on OO. To increase the expressivity of
-this system, TypeScript merges structures of different kinds that have
-the same name. You can combine structures to represent a
-single JavaScript value with multiple TypeScript declarations.
-
-For example, you can represent a function that also has properties, or
-nested types:
-
-```ts
-function pad(s: string, n: number, char: string, direction: pad.Direction): string {
-}
-namespace pad {
-    export type Direction = "left" | "right";
-    export const space = " ";
-    export const tab = "\t";
-    export const dot = ".";
-}
-pad('hi', 10, pad.dot, "left");
-```
-
-You can merge any two things that do not collide. This works across
-files too:
-
-```ts
-// @Filename: main.ts
-interface Main {
-    // lots of properties here
-}
-
-// @Filename: extra.ts
-interface Main {
-    extra: boolean;
-}
 ```
 
 # Concepts similar to Haskell
@@ -517,7 +418,7 @@ function liftArray<T>(t: T): Array<T> {
 }
 ```
 
-There is no case requirement, but the type parameters are conventionally
+There is no case requirement, but type parameters are conventionally
 single uppercase letters. Type parameters can also be constrained to a
 type, which behaves a bit like type class constraints:
 
@@ -548,12 +449,22 @@ In the first `length`, T is not necessary; notice that it's only
 referenced once, so it's not being used to constrain the type of the
 return value or other parameters.
 
+### Higher-kinded types
+
 TypeScript does not have higher kinded types, so the following is not legal:
 
 ```ts
 function length<T extends ArrayLike<unknown>, U>(m: T<U>) {
 }
 ```
+
+### Point-free programming
+
+Point-free programming is possible in JavaScript, but can be verbose.
+In TypeScript, type inference often fails for point-free programs, so
+you end up specifying type parameters instead of value parameters. The
+result is so verbose that it's usually better to avoid point-free
+programming.
 
 ## Module system
 
