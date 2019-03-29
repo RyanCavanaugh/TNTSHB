@@ -31,8 +31,9 @@ not much else.
 [R<sup>4</sup>RS Scheme](https://people.csail.mit.edu/jaffer/r4rs.pdf) is a good example.
 
 [The C++ Programming Language](http://www.stroustrup.com/4th.html) is
-a good place to learn about C-style type syntax. Unlike C++, TypeScript uses postfix types, like so: `x: string` instead
-of `string x`.
+a good place to learn about C-style type syntax. Unlike C++,
+TypeScript uses postfix types, like so: `x: string` instead of `string
+x`.
 
 # Concepts not in Haskell
 
@@ -68,7 +69,6 @@ Type        | Explanation
 ------------|-----------
 `unknown` | the top type.
 `never` | the bottom type.
-`{}` | the smallest non-null, non-undefined type.
 object literal | eg `{ property: Type }`
 `void` | a subtype of `undefined` intended for use as a return type.
 `T[]` | mutable arrays, also written `Array<T>`
@@ -460,9 +460,10 @@ function length<T extends ArrayLike<unknown>, U>(m: T<U>) {
 
 ### Point-free programming
 
-Point-free programming is possible in JavaScript, but can be verbose.
+Point-free programming &mdash; heavy use of currying and function
+composition &mdash; is possible in JavaScript, but can be verbose.
 In TypeScript, type inference often fails for point-free programs, so
-you end up specifying type parameters instead of value parameters. The
+you'll end up specifying type parameters instead of value parameters. The
 result is so verbose that it's usually better to avoid point-free
 programming.
 
@@ -564,6 +565,6 @@ consistently used in TypeScript code.
 
 TODO: Put links to the rest of the handbook here.
 
-* Mapped types
+* [[Mapped types]]
 * Index types and keyof types
 * Conditional types
