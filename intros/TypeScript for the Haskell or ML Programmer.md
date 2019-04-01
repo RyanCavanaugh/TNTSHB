@@ -132,7 +132,7 @@ And you can use an expression of type `any` anywhere:
 anys.map(anys[1]); // oh no, "oh no" is not a function
 ```
 
-It is contagious, too &mdash; if you initialise a variable with an
+`any` is contagious, too &mdash; if you initialise a variable with an
 expression of type `any`, the variable has type `any` too.
 
 ```ts
@@ -153,17 +153,18 @@ let o: { x: string } = { x: "hi", extra: 1 }; // ok
 let o2: { x: string } = o; // ok
 ```
 
-Here, the object literal `{ x: "hi", extra: 1 }` constructs a matching
+Here, the object literal `{ x: "hi", extra: 1 }` has a matching
 literal type `{ x: string, extra: number }`. That
 type is assignable to `{ x: string }` since
 it has all the required properties and those properties have
-assignable types. The extra property doesn't prevent assignment.
+assignable types. The extra property doesn't prevent assignment, it
+just makes it a subtype of `{ x: string }`.
 
-This is true for named types as well; for assignability purposes
+Named types just give a name to a type; for assignability purposes
 there's no difference between the type alias `One` and the interface
-type `Two` below. They both have a property `p: string`. (The behaviour with
-respect to recursive definitions and type parameters is slightly
-different, however.)
+type `Two` below. They both have a property `p: string`. (Type alises
+behave differently than interfaces with respect to recursive
+definitions and type parameters, however.)
 
 ```ts
 type One = { p: string };
@@ -177,10 +178,9 @@ two = new Three();
 
 ## Unions
 
-In TypeScript, union types are untagged. In other words, they do not
-generate discriminated unions like `data` does in Haskell. However,
-you can often discriminate types in a union using built-in tags or
-other properties.
+In TypeScript, union types are untagged. In other words, they are not
+discriminated unions like `data` in Haskell. However, you can often
+discriminate types in a union using built-in tags or other properties.
 
 ```ts
 function lol(arg: string | string[] | () => string | { s: string }): string {
@@ -563,8 +563,6 @@ consistently used in TypeScript code.
 
 # Further reading
 
-TODO: Put links to the rest of the handbook here.
-
 * [[Mapped types]]
-* Index types and keyof types
-* Conditional types
+* [[Index types]] and [[keyof types]]
+* [[Conditional types]]
