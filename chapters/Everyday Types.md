@@ -119,7 +119,7 @@ function getFavoriteNumber(): number {
 
 Much like variable type annotations, you usually don't need a return type annotation because TypeScript will infer the function's return type based on its `return` statements.
 The type annotation in the above example doesn't change anything.
-Some codebases will explicitly specify a return type for documentation purposes, to prevent accidental changes, or just for personal preference. 
+Some codebases will explicitly specify a return type for documentation purposes, to prevent accidental changes, or just for personal preference.
 
 ### Function Expressions
 
