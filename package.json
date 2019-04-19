@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "lint": "node lint/index.js",
     "build": "tsc -b scripts",
     "start": "tsc -b scripts && node scripts/server.js",
     "publish": "tsc -b scripts && node scripts/publish.js",
