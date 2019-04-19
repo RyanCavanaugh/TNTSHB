@@ -58,8 +58,8 @@ We can *observe* by reading the code that this function will only work if given 
 The only way in pure JavaScript to tell what `fn` does with a particular value is to call it and see what happens.
 This kind of behavior makes it hard to predict what code will do before it runs, which means it's harder to know what your code is going to do while you're writing it.
 
-Seen in this way, a *type* is simply the concept of describing which values are legal to pass to `fn` and which aren't legal.
-JavaScript only truly provides for *dynamic* typing - running the code to see what happens.
+Seen in this way, a *type* is the concept of describing which values are legal to pass to `fn` and which aren't legal.
+JavaScript only truly provides *dynamic* typing - running the code to see what happens.
 
 The alternative is to use a *static* type system to make predictions about what code is legal *before* it runs.
 
@@ -89,9 +89,11 @@ Running that last sample with TypeScript will give us an error message before we
 ## Non-exception Failures
 
 So far we've been discussing certain things like runtime errors - cases where the JavaScript runtime throws its hands up and tells us that it thinks something is nonsensical.
-Those cases come up because [the ECMAScript specification](https://tc39.github.io/ecma262/) actually declares that trying to call something that isn't callable causes an error.
-That sounds obvious, but you could imagine that accessing a property on an object that doesn't exist would cause an error too.
-Instead, JavaScript gives us different behavior to keep things entertaining and gives us the value `undefined`:
+Those cases come up because [the ECMAScript specification](https://tc39.github.io/ecma262/) has explicit instructions on how the language should behave when it runs into something unexpected.
+
+For example, the specification says that trying to call something that isn't callable should throw an error.
+Maybe that sounds like "obvious behavior", but you could imagine that accessing a property that doesn't exist on an object should throw an error too.
+Instead, JavaScript gives us different behavior and returns the value `undefined`:
 
 ```js
 let foo = {
