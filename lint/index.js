@@ -8,7 +8,9 @@ const fs = require("fs");
 
 const readFile = promisify(fs.readFile);
 
-const markdownConfig = /** @type {import("markdownlint").MarkdownlintConfig} */ (require("./.markdownlint.json"));
+const markdownConfig = /** @type {import("markdownlint").MarkdownlintConfig} */ (
+    require("./markdownlint.json")
+);
 
 main().catch(e => console.error("" + e));
 
