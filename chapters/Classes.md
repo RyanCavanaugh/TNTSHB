@@ -600,6 +600,7 @@ class MySafe {
   private secretKey = 12345;
 }
 ```
+
 ```js
 // In a JavaScript file...
 const s = new MySafe();
@@ -705,7 +706,6 @@ const MyHelperObject = {
 
 ## Parameter Properties
 
-
 ## Class Expressions
 
 ## `abstract` Classes and Methods
@@ -716,10 +716,7 @@ const MyHelperObject = {
 
 ## Handling Generic Constructors
 
-
 ## Impact of the Class Fields Proposal
-
-
 
 * Basics
   * Hey it's just ES6
