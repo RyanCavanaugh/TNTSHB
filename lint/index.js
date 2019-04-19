@@ -1,71 +1,30 @@
 // @ts-check
 
-var promisify = require("util").promisify;
-var markdownlint = require("markdownlint");
-var glob = promisify(require("glob"));
-var path = require("path");
-var fs = require("fs");
+const promisify = require("util").promisify;
+const markdownlint = require("markdownlint");
+const glob = promisify(require("glob"));
+const path = require("path");
+const fs = require("fs");
 
 const readFile = promisify(fs.readFile);
 
-var markdownConfig = /** @type {import("markdownlint").MarkdownlintConfig} */ (require("./.markdownlint.json"));
+const markdownConfig = /** @type {import("markdownlint").MarkdownlintConfig} */ (require("./.markdownlint.json"));
 
 main().catch(e => console.error("" + e));
 
 async function main() {
     const cwd = __dirname;
-    var inputFiles = await glob(path.join(cwd, "../chapters/**/*.md"), {
+    const inputFiles = await glob(path.join(cwd, "../chapters/**/*.md"), {
         cwd,
     });
-    var options = {
+    const options = {
         files: inputFiles,
-        config: {
-            "default": false,
-            "heading-style": {
-                "style": "atx"
-            },
-            "ul-style": {
-                "style": "asterisk"
-            },
-            "list-indent": true,
-            "ul-start-left": true,
-            //"ul-indent": {
-            //    "indent": 4
-            //},
-            "no-trailing-spaces": true,
-            "no-hard-tabs": true,
-            "no-reversed-links": true,
-            //"no-multiple-blanks": true,
-            "no-missing-space-atx": true,
-            "no-multiple-space-atx": true,
-            "blanks-around-headings": true,
-            "heading-start-left": true,
-            "no-trailing-punctuation": {
-                "punctuation": ".,;:!"
-            },
-            "no-multiple-space-blockquote": true,
-            "no-blanks-blockquote": true,
-            "ol-prefix": {
-                "style": "ordered"
-            },
-            "list-marker-space": true,
-            "blanks-around-fences": true,
-            "blanks-around-lists": true,
-            "no-bare-urls": true,
-            "hr-style": {
-                "style": "---"
-            },
-            "no-space-in-emphasis": true,
-            "no-space-in-links": true,
-            "fenced-code-language": true
-        }
-        ,
+        config: markdownConfig
     };
 
-    var result = await promisify(markdownlint)(options);
-    //console.log(result.toString(true).split("\n").filter(x => x.includes("code-language")));
+    const result = await promisify(markdownlint)(options);
     console.log(result.toString())
-    var exitCode = 0;
+    let exitCode = 0;
     for (const fileErrors of Object.values(result)) {
         exitCode += fileErrors.length;
     }
@@ -81,15 +40,15 @@ async function main() {
  * @param {string} text
  */
 function checkForImproperlyIndentedFencedCodeBlocks(fileName, text) {
-    var lines = text.split(/\r?\n/g);
-    var numErrors = 0;
+    const lines = text.split(/\r?\n/g);
+    let numErrors = 0;
 
-    for (var i = 0; i < lines.length; i++) {
-        var line = lines[i];
-        var codeBlockMatch = line.match(/^(\s*)```\S+/);
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const codeBlockMatch = line.match(/^(\s*)```\S+/);
 
         if (codeBlockMatch) {
-            var startingColumn = codeBlockMatch[1].length;
+            const startingColumn = codeBlockMatch[1].length;
             if (startingColumn === 0 || startingColumn === getCorrectStartingColumnForLine(lines, i)) {
                 continue;
             }
@@ -108,14 +67,14 @@ function checkForImproperlyIndentedFencedCodeBlocks(fileName, text) {
  * @param {number} lineIndex
  */
 function getCorrectStartingColumnForLine(lines, lineIndex) {
-    for (var i = lineIndex - 1; i >= 0; i--) {
-        var line = lines[i];
+    for (let i = lineIndex - 1; i >= 0; i--) {
+        const line = lines[i];
 
         if (line.length === 0) {
             continue;
         }
 
-        var m;
+        let m;
         if (m = line.match(/^\s*([\*\-]|(\d+\.))\s*/)) {
             return m[0].length;
         }
