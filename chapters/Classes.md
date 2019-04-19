@@ -149,6 +149,7 @@ class Point {
 ```
 
 There are just a few differences between class constructor signatures and function signatures:
+
 * Constructors can't have type parameters - these belong on the outer class declaration, which we'll learn about later
 * Constructors can't have return type annotations - the class instance type is always what's returned
 
@@ -229,6 +230,7 @@ class C {
 > It's fine to expose public fields if you don't need to add additional logic during the get/set operations.
 
 TypeScript has some special inference rules for accessors:
+
 * If no `set` exists, the property is automatically `readonly`
 * The type of the setter parameter is inferred from the return type of the getter
 * If the setter parameter has a type annotation, it must match the return type of the getter
