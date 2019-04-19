@@ -38,6 +38,7 @@ pt.y = 0;
 As with other locations, the type annotation is optional, but will be an implict `any` if not specified.
 
 Fields can also have *initializers*; these will run automatically when the class is instantiated:
+
 ```ts
 class Point {
     x = 0;
@@ -359,6 +360,7 @@ Note that because JavaScript classes are a simple lookup object, there is no not
 TypeScript enforces that a derived class is always a subtype of its base class.
 
 For example, here's a legal way to override a method:
+
 ```ts
 class Base {
   greet() {
